@@ -9,6 +9,9 @@ import { RadioGroup, RadioGroupItem } from "@radix-ui/react-radio-group";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../redux/authSlice";
+import { Loader2 } from "lucide-react";
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -19,7 +22,9 @@ const Signup = () => {
     role: "",
     file: "",
   });
+  const {loading,user} = useSelector(store=>store.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
@@ -31,6 +36,7 @@ const Signup = () => {
     const formData = new FormData();
     formData.append("fullname", input.fullname);
     formData.append("email", input.email);
+    formData.append("phoneNumber",input.phoneNumber);
     formData.append("password", input.password);
     formData.append("role", input.role);
     if (input.file) {
@@ -38,6 +44,7 @@ const Signup = () => {
     }
 
     try {
+dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -51,6 +58,8 @@ const Signup = () => {
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+    }finally{
+      dispatch(setLoading(false));
     }
   };
   return (
@@ -137,9 +146,10 @@ const Signup = () => {
               />
             </div>
           </div>
-          <Button type="submit" className="w-full my-4">
+          { loading  ?<Button className={"w-full my-4"}><Loader2 className=" mr-2 h-4 w-4 animate-spin"/>Please Wait</Button>: <Button type="submit" className="w-full my-4">
             SignUp
-          </Button>
+          </Button>}
+          
           <span className="text-sm">
             Already have an account?
             <Link to="/login" className="text-blue-600">
