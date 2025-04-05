@@ -25,8 +25,15 @@ const AdminJobsTable = () => {
         if (!searchJobByText) {
           return true;
         }
-        return job?.title ?.toLowerCase().includes(searchCompanyByText.toLowerCase()|| job?.company?.name.toLowerCase().includes(searchJobByText.toLowerCase()));
-    });
+        return job?.title
+          ?.toLowerCase()
+          .includes(
+            searchCompanyByText.toLowerCase() ||
+              job?.company?.name
+                .toLowerCase()
+                .includes(searchJobByText.toLowerCase())
+          );
+      });
     setFilterJobs(filteredJobs);
   }, [allAdminJobs, searchJobByText]);
   return (
@@ -64,6 +71,15 @@ const AdminJobsTable = () => {
                     >
                       <Edit2 className="w-4" />
                       <span>Edit</span>
+                    </div>
+                    <div
+                      onClick={() =>
+                        navigate(`/admin/jobs/${job._id}/applicants`)
+                      }
+                      className="flex items-center w-fit gap-2 cursor-pointer mt-2"
+                    >
+                      <Eye className="w-4" />
+                      <span>Applicants</span>
                     </div>
                   </PopoverContent>
                 </Popover>
