@@ -25,7 +25,7 @@ const Job = ({job}) => {
       <div className="flex items-center gap-2 my-2">
         <Button>
           <Avatar>
-            <AvatarImage src="https://th.bing.com/th/id/OIP.eNxfRQCY5rTUUVj7uhLBvAHaEv?rs=1&pid=ImgDetMain" />
+            <AvatarImage src={job?.company?.logo} />
           </Avatar>
         </Button>
 
