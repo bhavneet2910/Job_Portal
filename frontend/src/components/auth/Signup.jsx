@@ -62,6 +62,11 @@ dispatch(setLoading(true));
       dispatch(setLoading(false));
     }
   };
+  useEffect(()=>{
+      if(user){
+        navigate("/");
+    }
+    },[])
   return (
     <div>
       <Navbar />
