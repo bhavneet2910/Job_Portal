@@ -1,8 +1,9 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { data } from "react-router-dom";
 import { Label } from "@radix-ui/react-label";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { useDispatch } from "react-redux";
+import { setSearchedQuery } from "../redux/jobSlice";
 
 const filterData = [
   {
