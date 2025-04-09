@@ -24,7 +24,7 @@ const Profile = () => {
       <Navbar />
       <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8"></div>
       <div className="flex justify-between">
-        <div className="flex item-cnter gap-4">
+        <div className="flex items-center gap-4">
           <Avatar className="h-24 w-24">
             <AvatarImage
               src="https://th.bing.com/th/id/OIP.eNxfRQCY5rTUUVj7uhLBvAHaEv?rs=1&pid=ImgDetMain"
@@ -56,7 +56,7 @@ const Profile = () => {
         <div className="flex items-center gap-1">
           {
          user?.profile?.skills.length != 0 ? (
-          user?.profile?.skills.map((item, index) => <Badge key={index}>{item}</Badge>)
+          user?.profile?.skills?.map((item, index) => <Badge key={index}>{item}</Badge>)
           ) : (
             <span>NA</span>
           )}
