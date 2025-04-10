@@ -85,15 +85,22 @@ export const login = async(req,res)=>{
     profile:user.profile
   }
 
-  return res.status(200).cookie("token",token,{maxAge:1*24*60*60*1000,httpsOnly:true,sameSite:'strict'}).json({
-    message:`Welcome back ${user.fullname}`,
-    user,
-    success:true
+  return res.status(200)
+  .cookie("token", token, {
+    maxAge: 1 * 24 * 60 * 60 * 1000, 
+    httpOnly: true, 
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+    secure: process.env.NODE_ENV === "production" ? true : false,
   })
-  }catch(error){
-console.log(error)
-  }
+  .json({
+    message: `Welcome back ${user.fullname}`,
+    user,
+    success: true,
+  }) ;
+} catch(error){
+  console.log(error);
 }
+} 
 export const logout = async(req,res)=>{
   try{
     return res.status(200).cookie("token","",{maxAge:0}).json({
@@ -159,3 +166,4 @@ return res.status(200).json({
 
   }
 }
+  
