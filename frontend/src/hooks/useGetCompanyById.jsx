@@ -1,25 +1,23 @@
-import { COMPANY_API_END_POINT, JOB_API_END_POINT } from '../utils/constant'
-import axios from 'axios'
-import  { useEffect } from 'react'
-import {useDispatch} from 'react-redux'
-import { setAllJobs } from '../redux/jobSlice'
-import { setSingleCompany } from '../redux/companySlice'
+import { setSingleCompany } from "@/redux/companySlice";
+import axios from "@/lib/axios";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-const useGetCompanyById = (companyId) => {
-   const dispatch =useDispatch()
- useEffect(()=>{
-    const fetchSingleCompany = async()=>{
-   try{
-    const res= await axios.get(`${COMPANY_API_END_POINT}/get/${companyId}`,{withCredentials:true});
-    if(res.data.success){
-      dispatch(setSingleCompany(res.data.company));
-    }
-   } catch(error){
-console.log(error);
-   }
-}
-fetchSingleCompany();
- },[companyId,dispatch])
-}
+const useGetCompanyById = (id) => {
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        const fetchCompanyDetails = async () => {
+            try {
+                const res = await axios.get(`/company/getcompany/${id}`);
+                if(res.data.success){
+                    dispatch(setSingleCompany(res.data.company));
+                }
+            } catch (error) {
+                console.log("Error occurred while fetching company details",error);
+            }
+        };
+        fetchCompanyDetails();
+    },[id,dispatch])
+};
 
-export default useGetCompanyById
+export default useGetCompanyById;
