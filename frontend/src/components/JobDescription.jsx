@@ -101,6 +101,10 @@ const JobDescription = () => {
         <h1 className='font-bold my-1'>Salary: <span className='pl-4 font-normal text-gray-800'>{singleJobById?.salary} LPA</span></h1>
         <h1 className='font-bold my-1'>Total Applicants: <span className='pl-4 font-normal text-gray-800'>{singleJobById?.applications?.length}</span></h1>
         <h1 className='font-bold my-1'>Posted Date: <span className='pl-4 font-normal text-gray-800'>{singleJobById?.createdAt?.split("T")[0]}</span></h1>
+        <h1 className='font-bold my-1'>Expiration Date: <span className='pl-4 font-normal text-gray-800'>{singleJobById?.expirationDate?.split("T")[0]}</span></h1>
+        <h1 className='font-bold my-1'>Status: <span className={`pl-4 font-normal ${singleJobById?.isExpired ? 'text-red-600' : 'text-green-600'}`}>
+            {singleJobById?.isExpired ? 'Expired' : `${singleJobById?.remainingDays} days remaining`}
+        </span></h1>
       </div>
     </div>
   );

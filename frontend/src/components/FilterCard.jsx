@@ -3,6 +3,7 @@ import { Label } from './ui/label';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useDispatch } from 'react-redux';
 import { setSearchText } from '@/redux/jobSlice';
+import { Button } from './ui/button';
 
 const filterData = [
     {
@@ -21,26 +22,58 @@ const filterData = [
 
 const FilterCard = () => {
     const [selectedValue, setSelectedValue] = useState('');
+    const [selectedType, setSelectedType] = useState('');
     const dispatch = useDispatch();
+
     const handleChange = (value) => {
+        console.log('Selected filter value:', value); // Debug log
         setSelectedValue(value);
+        // Find which type of filter was selected
+        for (const filter of filterData) {
+            if (filter.array.includes(value)) {
+                console.log('Filter type:', filter.filterType); // Debug log
+                setSelectedType(filter.filterType);
+                break;
+            }
+        }
     };
+
     useEffect(() => {
-        dispatch(setSearchText(selectedValue));
-    }, [selectedValue])
+        if (selectedValue) {
+            console.log('Dispatching search with value:', selectedValue); // Debug log
+            console.log('Filter type:', selectedType); // Debug log
+            dispatch(setSearchText(selectedValue));
+        }
+    }, [selectedValue, dispatch]);
+
+    const clearFilter = () => {
+        setSelectedValue('');
+        setSelectedType('');
+        dispatch(setSearchText(''));
+    };
 
     return (
         <div className='w-full bg-white p-3 rounded-md'>
-            <div className='flex items-center justify-between'>
+            <div className='flex items-center justify-between mb-3'>
                 <h1 className='font-bold text-lg'>Filter Jobs</h1>
+                {selectedValue && (
+                    <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={clearFilter}
+                        className="text-sm text-red-600 hover:text-red-800"
+                    >
+                        Clear Filter
+                    </Button>
+                )}
             </div>
-            <hr className='mt-3' />
+            <hr className='mb-3' />
             <RadioGroup value={selectedValue} onValueChange={handleChange}>
                 {filterData.map((data, index) => (
-                    <div key={index}>
-                        <h1 className='font-medium text-lg'>{data.filterType}</h1>
+                    <div key={index} className="mb-4">
+                        <h1 className='font-medium text-lg mb-2'>{data.filterType}</h1>
                         {data.array.map((item, idx) => {
-                            const itemId = `r${index}-${idx}`; // Ensure unique id for each radio button
+                            const itemId = `r${index}-${idx}`;
                             return (
                                 <div key={idx} className="flex items-center space-x-2 my-2">
                                     <RadioGroupItem value={item} id={itemId} />
@@ -51,6 +84,16 @@ const FilterCard = () => {
                     </div>
                 ))}
             </RadioGroup>
+            {selectedValue && (
+                <div className="mt-3 p-2 bg-gray-50 rounded">
+                    <p className="text-sm text-gray-600">
+                        Filtering by: <span className="font-medium">{selectedType}</span>
+                    </p>
+                    <p className="text-sm text-gray-600">
+                        Value: <span className="font-medium">{selectedValue}</span>
+                    </p>
+                </div>
+            )}
         </div>
     );
 };
